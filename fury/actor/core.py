@@ -434,16 +434,16 @@ def actor_from_primitive(
         texcoords=big_vertices.astype("float32"),
         colors=big_colors.astype("float32"),
     )
-
     mat = _create_mesh_material(
         material=material,
         enable_picking=enable_picking,
         flat_shading=not smooth,
         wireframe=wireframe,
         wireframe_thickness=wireframe_thickness,
-        alpha_mode="weighted_blend" if is_transparent else "auto",
-        depth_write=not is_transparent,
+        alpha_mode="blend" if is_transparent else "opaque",
+        depth_write=True,
     )
+    mat.color_mode = "vertex"
     obj = create_mesh(geometry=geo, material=mat)
     if not repeat_primitive:
         obj.local.position = centers[0]

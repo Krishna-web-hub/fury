@@ -38,6 +38,12 @@ def validate_opacity(opacity):
     """
     if opacity is None:
         return 1.0
+    if isinstance(opacity, np.ndarray):
+        opacity = opacity.astype(np.float32)
+        if not np.all((0 <= opacity) & (opacity <= 1)):
+            raise ValueError("Opacity values must be between 0 and 1.")
+        return opacity
+
     if not (0 <= opacity <= 1):
         raise ValueError("Opacity must be between 0 and 1.")
     return opacity
